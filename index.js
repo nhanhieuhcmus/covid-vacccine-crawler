@@ -9,11 +9,11 @@ let port = process.env.PORT || 3000;
 
 let db = [];
 
-app.all('/', function(req, res, next) {
+app.all("/", function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
-  });
+    next();
+});
 
 app.get("/", (req, res) => {
     res.send(
@@ -35,6 +35,12 @@ app.get("/all", (req, res) => {
             timeout: 0, // remove the timeout
         });
 
+        // await page.evaluate(() => {
+        //     while (document.querySelectorAll("button")[30]) {
+        //         document.querySelectorAll("button")[30].click();
+        //     }
+        // });
+
         const data = await page.evaluate(() => {
             // const info = document.querySelectorAll('.icon-box-home span');
             // const info1 = info[0].innerText.replaceAll(',','').slice(0,-7);
@@ -47,9 +53,15 @@ app.get("/all", (req, res) => {
             // }
 
             const table = document.querySelectorAll("table ")[0];
-            const tableHead = Array.from(table.querySelectorAll("th")).map(
-                (th) => th.innerText
-            );
+            // const tableHead = Array.from(table.querySelectorAll("th")).map(
+            //     (th) => th.innerText
+            // );
+
+            // click the View more button before to get all table data
+            const viewMoreButton = document.querySelectorAll("button")[30];
+            console.log("viewMoreButton: ", viewMoreButton);
+            viewMoreButton.click();
+
             const tableBody = Array.from(
                 table.querySelectorAll("tbody tr")
             ).map((tr) => {
@@ -68,11 +80,8 @@ app.get("/all", (req, res) => {
                     injection1Rate: rows[8],
                 };
             });
-            const viewMoreButton = document.querySelectorAll("button")[30];
-            console.log("viewMoreButton: ", viewMoreButton);
-            // viewMoreButton.click();
+
             return tableBody;
-            // console.log(tableBody);
         });
         console.log(data);
 
@@ -91,4 +100,3 @@ app.get("/all", (req, res) => {
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
-
