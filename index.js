@@ -3,18 +3,13 @@ const express = require("express");
 const app = express();
 let port = process.env.PORT || 3000;
 
-let db = {};
+let db = [];
 
-setInterval(()=>{
-    app.get("/", (req, res) => {
-        console.log("app.get()");
-        res.send(
-            "Hello there! This API crawled from https://tiemchungcovid19.gov.vn/portal"
-        );
-    });
-    
-},3000);
-
+app.get("/", (req, res) => {
+    res.send(
+        "Hello there! This API crawled from https://tiemchungcovid19.gov.vn/portal"
+    );
+});
 
 app.get("/all", (req, res) => {
     const puppeteerRuner = async () => {
@@ -72,23 +67,22 @@ app.get("/all", (req, res) => {
         console.log(data);
 
         // res.json(data);
-        db = data
+        db = data;
         res.json(db);
 
         await browser.close();
     };
-    if (Object.keys(db).length > 0 && db.constructor === Object) res.json(db);
+    if (db.length > 0 && db.constructor === Array) res.json(db);
     else {
         puppeteerRuner();
-    };
+    }
 });
 
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
 
-
 const a = {};
-const b = {a:1,b:2,c:3};
-const c = [3,2,4];
-Object.assign(a,b);
+const b = { a: 1, b: 2, c: 3 };
+const c = [3, 2, 4];
+Object.assign(a, b);
