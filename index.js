@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 let port = process.env.PORT || 3000;
 
-const data = {};
+const db = {};
 
 app.get("/", (req, res) => {
     res.send(
@@ -66,12 +66,16 @@ app.get("/all", (req, res) => {
         });
         console.log(data);
 
-        res.json(data);
+        // res.json(data);
+        Object.assign(db, data);
+        res.json(db);
 
         await browser.close();
     };
-
-    puppeteerRuner();
+    if (Object.keys(db).length > 0 && db.constructor === Object) res.json(db);
+    else {
+        puppeteerRuner();
+    };
 });
 
 app.listen(port, () => {
