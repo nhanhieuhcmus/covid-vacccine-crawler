@@ -1,6 +1,9 @@
 const puppeteer = require("puppeteer");
 const express = require("express");
 const app = express();
+
+app.use(cors); // enable CORS
+
 let port = process.env.PORT || 3000;
 
 let db = [];
