@@ -5,6 +5,12 @@ let port = process.env.PORT || 3000;
 
 let db = [];
 
+app.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+  });
+
 app.get("/", (req, res) => {
     res.send(
         "Hello there! This API crawled from https://tiemchungcovid19.gov.vn/portal"
