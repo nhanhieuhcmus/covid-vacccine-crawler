@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 let port = process.env.PORT || 3000;
 
+const data = {};
+
 app.get("/", (req, res) => {
     res.send(
         "Hello there! This API crawled from https://tiemchungcovid19.gov.vn/portal"
@@ -10,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/all", (req, res) => {
-    (async () => {
+    const puppeteerRuner = async () => {
         const browser = await puppeteer.launch({
             // headless: false,
             args: ["--no-sandbox", "--disabled-setupid-sandbox"],
@@ -22,7 +24,6 @@ app.get("/all", (req, res) => {
             waitUntil: "load",
             timeout: 0, // remove the timeout
         });
-        // await page.screenshot({ path: "example.png" });
 
         const data = await page.evaluate(() => {
             // const info = document.querySelectorAll('.icon-box-home span');
@@ -65,10 +66,12 @@ app.get("/all", (req, res) => {
         });
         console.log(data);
 
-        res.send(JSON.stringify(data));
+        res.send(JSON.parse(JSON.stringify(data)));
 
         await browser.close();
-    })();
+    };
+
+    puppeteerRuner();
 });
 
 app.listen(port, () => {
