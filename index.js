@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 const cors = require("cors");
 const app = express();
 
-app.use(cors); // enable CORS
+app.use(cors()); // enable CORS
 
 let port = process.env.PORT || 3000;
 
@@ -92,7 +92,3 @@ app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}`);
 });
 
-const a = {};
-const b = { a: 1, b: 2, c: 3 };
-const c = [3, 2, 4];
-Object.assign(a, b);
