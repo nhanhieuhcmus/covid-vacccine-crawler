@@ -66,7 +66,7 @@ app.get("/all", (req, res) => {
         });
         console.log(data);
 
-        res.send(JSON.parse(JSON.stringify(data)));
+        res.json(data);
 
         await browser.close();
     };
